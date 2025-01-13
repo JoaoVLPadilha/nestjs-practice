@@ -16,9 +16,12 @@ import {
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUserParamDto } from './dtos/get-users-param.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
+import { UsersService } from './providers/users.service';
 
 @Controller('users')
 export class UsersController {
+  constructor(private usersService: UsersService) {}
+
   @Get('/:id?')
   public getUsers(
     @Param() getUserParamDto: GetUserParamDto,
@@ -26,7 +29,7 @@ export class UsersController {
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
   ) {
     console.log(getUserParamDto);
-    return `You send a request to users endpoint with id: ${JSON.stringify(getUserParamDto)} and query: ${`${JSON.stringify(limit + ' ' + page)}`}`;
+    return this.usersService.findAll(getUserParamDto, limit, page);
   }
 
   @Post()
