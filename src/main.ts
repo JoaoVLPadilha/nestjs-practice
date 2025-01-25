@@ -11,7 +11,11 @@ async function bootstrap() {
     }),
   );
   // Swagger configuration
-  const config = new DocumentBuilder().setVersion('1.0').build();
+  const config = new DocumentBuilder()
+    .setVersion('1.0')
+    .setTitle('NestJs - Study')
+    .setDescription('Use the Base url as http://localhost:3000')
+    .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
