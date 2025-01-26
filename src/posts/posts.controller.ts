@@ -1,7 +1,9 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { ApiTags } from '@nestjs/swagger';
 import { CreatePostsDto } from './dtos/create-posts.dto';
+import { PatchUserDto } from 'src/users/dtos/patch-user.dto';
+import { PatchPostDto } from './dtos/patch-posts-dto';
 
 @Controller('posts')
 @ApiTags('Posts')
@@ -18,4 +20,7 @@ export class PostsController {
     console.log(createPostsDto);
     return createPostsDto;
   }
+
+  @Patch()
+  public patchPosts(@Body() patchPostsDto: PatchPostDto) {}
 }
