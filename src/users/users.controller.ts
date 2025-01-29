@@ -11,7 +11,6 @@ import {
   Headers,
   ParseIntPipe,
   DefaultValuePipe,
-  ValidationPipe,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUserParamDto } from './dtos/get-users-param.dto';
@@ -39,7 +38,7 @@ export class UsersController {
     @Headers() headers: any,
   ) {
     console.log(createUserDto instanceof CreateUserDto);
-    return `You send a request to create a user with body: ${JSON.stringify(createUserDto)}, and headers: ${JSON.stringify(headers)}`;
+    return this.usersService.createUser(createUserDto);
   }
 
   @Put()
