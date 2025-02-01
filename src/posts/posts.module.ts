@@ -5,6 +5,8 @@ import { UsersModule } from 'src/users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Post } from './post.entity';
 import { User } from 'src/users/user.entity';
+import { Tag } from 'src/tags/tag.entity';
+import { MetaOption } from 'src/meta-options/meta-options.entity';
 
 @Module({
   controllers: [PostsController],
