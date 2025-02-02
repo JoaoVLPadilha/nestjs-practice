@@ -23,28 +23,19 @@ export class PostsService {
     return (newPost = await this.postRepository.save(newPost));
   }
 
-  public findAll(idUser: string) {
-    const user = this.usersService.findOne(idUser);
-    return [
-      {
-        user,
-        title: 'Test Title',
-        content: 'Test Content',
-      },
-      {
-        user,
-        title: 'Test Title',
-        content: 'Test Content',
-      },
-      {
-        user,
-        title: 'Test Title',
-        content: 'Test Content',
-      },
-    ];
+  public async findAll() {
+    const post = await this.postRepository.find();
+    return post;
   }
   public async create(createPostsDto: CreatePostsDto) {
     let newPost = this.postRepository.create(createPostsDto);
+    console.log(newPost);
     return await this.postRepository.save(newPost);
+  }
+
+  public async delete(id: number) {
+    await this.postRepository.delete(id);
+
+    return { deleted: true, id };
   }
 }
