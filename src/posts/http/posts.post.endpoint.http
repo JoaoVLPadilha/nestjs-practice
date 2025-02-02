@@ -2,13 +2,16 @@ POST http://localhost:3000/posts
 Content-Type: application/json
 {
   "title":"string",
+  "slug":"teste slug",
+  "tags": ["test","test","test"],
   "postType": "post",
-  "slug": "string",
   "status": "draft",
   "content": "string",
   "schema": "{\"name\":\"João\",\"age\":30,\"isAdmin\":true}",
   "featuredImageUrl": "string",
   "publishOn": "2025-01-20T10:30:45.123Z",
-  "tags": ["string[]"]
+  "metaOptions": {
+      "metaValue": "{\"nome\": \"João\", \"idade\": 30, \"ativo\": true}"
+  }
 }
 
