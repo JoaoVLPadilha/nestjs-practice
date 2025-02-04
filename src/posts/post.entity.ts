@@ -52,12 +52,9 @@ export class Post {
   // })
   // tags: string[];
 
-  @OneToOne(
-    () => MetaOption,
-    (metaOptions) => {
-      metaOptions.post;
-    },
-    { cascade: true, eager: true },
-  )
+  @OneToOne(() => MetaOption, (metaOptions) => metaOptions.post, {
+    cascade: true,
+    eager: true,
+  })
   metaOptions?: MetaOption;
 }
