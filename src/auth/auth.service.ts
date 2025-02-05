@@ -9,7 +9,6 @@ export class AuthService {
   ) {}
 
   public login(email: string, password: string, id: string) {
-    const user = this.usersService.findOne('1234');
     return 'SAMPLE_TOKEN';
   }
   public isAuthenticathed(id: string) {

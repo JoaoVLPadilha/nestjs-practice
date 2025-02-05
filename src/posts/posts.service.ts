@@ -18,19 +18,28 @@ export class PostsService {
     @InjectRepository(MetaOption)
     private metaOptionRepository: Repository<MetaOption>,
   ) {}
-  public async createPost(createPostsDto: CreatePostsDto) {
-    let newPost = this.postRepository.create(createPostsDto);
-    return (newPost = await this.postRepository.save(newPost));
-  }
+  // public async createPost(createPostsDto: CreatePostsDto) {
+
+  //   createPostsDto.author
+  //   let newPost = this.postRepository.create(createPostsDto);
+  //   return (newPost = await this.postRepository.save(newPost));
+  // }
 
   public async findAll() {
     const post = await this.postRepository.find();
     return post;
   }
   public async create(createPostsDto: CreatePostsDto) {
-    let newPost = this.postRepository.create(createPostsDto);
-    console.log(newPost);
-    return await this.postRepository.save(newPost);
+    const findUser = await this.usersService.findOne(createPostsDto.authorId);
+    console.log('findUser', findUser);
+    if (findUser.email) {
+      let newPost = this.postRepository.create({
+        ...createPostsDto,
+        author: findUser,
+      });
+      console.log(newPost);
+      return await this.postRepository.save(newPost);
+    }
   }
 
   public async delete(id: number) {

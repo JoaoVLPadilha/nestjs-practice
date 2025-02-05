@@ -5,6 +5,7 @@ import {
   isArray,
   IsDate,
   IsEnum,
+  IsInt,
   IsISO8601,
   IsJSON,
   IsNotEmpty,
@@ -14,6 +15,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { CreatePostMetaOptionsDto } from 'src/meta-options/dtos/create-post-meta-options.dto';
+import { User } from 'src/users/user.entity';
 export enum postTypeEnum {
   Post = 'post',
   Page = 'page',
@@ -34,6 +36,15 @@ export class CreatePostsDto {
   @IsString()
   @IsNotEmpty()
   title: string;
+
+  @ApiProperty({
+    type: 'integer',
+    required: true,
+    example: 1,
+  })
+  @IsInt()
+  @IsNotEmpty()
+  authorId: number;
 
   @ApiProperty({
     enum: postTypeEnum,

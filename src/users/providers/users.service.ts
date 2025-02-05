@@ -63,12 +63,7 @@ export class UsersService {
    * @param id
    * @returns
    */
-  public findOne(id: string) {
-    const isAuth = this.authService.isAuthenticathed('1234');
-    console.log(isAuth);
-    return {
-      name: 'John Doe',
-      email: 'john@doe.coom',
-    };
+  public async findOne(id: number) {
+    return await this.usersRepository.findOneBy({ id });
   }
 }
