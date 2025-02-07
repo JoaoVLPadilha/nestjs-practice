@@ -98,12 +98,10 @@ export class CreatePostsDto {
   @ApiPropertyOptional({
     type: 'array',
     description: 'This is',
-    example: '',
+    example: [1, 2],
   })
   @IsArray()
-  @IsString({ each: true })
-  @MinLength(3, { each: true })
-  tags: string[];
+  tags: number[];
 
   @ApiProperty({
     type: 'object',

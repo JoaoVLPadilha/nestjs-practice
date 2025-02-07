@@ -6,11 +6,13 @@ import { User } from 'src/users/user.entity';
 import { Repository } from 'typeorm';
 import { Post } from './post.entity';
 import { MetaOption } from 'src/meta-options/meta-options.entity';
+import { TagsService } from 'src/tags/tags.service';
 
 @Injectable()
 export class PostsService {
   constructor(
     private usersService: UsersService,
+    private tagService: TagsService,
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     @InjectRepository(Post)
@@ -26,16 +28,23 @@ export class PostsService {
   // }
 
   public async findAll() {
-    const post = await this.postRepository.find();
+    const post = await this.postRepository.find({
+      relations: {
+        metaOptions: true,
+        tags: true,
+      },
+    });
     return post;
   }
   public async create(createPostsDto: CreatePostsDto) {
     const findUser = await this.usersService.findOne(createPostsDto.authorId);
-    console.log('findUser', findUser);
+    const tags = await this.tagService.getMultipleTags(createPostsDto.tags);
+    console.log('tags', tags);
     if (findUser.email) {
       let newPost = this.postRepository.create({
         ...createPostsDto,
         author: findUser,
+        tags,
       });
       console.log(newPost);
       return await this.postRepository.save(newPost);

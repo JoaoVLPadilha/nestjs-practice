@@ -2,6 +2,8 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -10,6 +12,7 @@ import { postTypeEnum, statusEnum } from './dtos/create-posts.dto';
 import { CreatePostMetaOptionsDto } from 'src/meta-options/dtos/create-post-meta-options.dto';
 import { MetaOption } from 'src/meta-options/meta-options.entity';
 import { User } from 'src/users/user.entity';
+import { Tag } from 'src/tags/tag.entity';
 
 @Entity()
 export class Post {
@@ -49,10 +52,10 @@ export class Post {
 
   @Column()
   publishOn: Date;
-  // @Column({
-  //   array: true,
-  // })
-  // tags: string[];
+
+  @ManyToMany(() => Tag)
+  @JoinTable()
+  tags: Tag[];
 
   @OneToOne(() => MetaOption, (metaOptions) => metaOptions.post, {
     cascade: true,
