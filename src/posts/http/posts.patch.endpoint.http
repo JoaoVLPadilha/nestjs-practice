@@ -1,6 +1,18 @@
 PATCH http://localhost:3000/posts
 Content-Type: application/json
-
 {
-  "metaValue": "{value: `newValue`}"
+  "id":30,
+  "title":"super teste",
+  "authorId":1,
+  "slug":"teste slug",
+  "postType": "post",
+  "status": "draft",
+  "content": "string",
+  "schema": "{\"name\":\"João\",\"age\":30,\"isAdmin\":true}",
+  "featuredImageUrl": "string",
+  "publishOn": "2025-01-20T10:30:45.123Z",
+  "metaOptions": {
+      "metaValue": "{\"nome\": \"João\", \"idade\": 30, \"ativo\": true}"
+  },
+  "tags": [1,20T10]
 }

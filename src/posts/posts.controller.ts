@@ -30,7 +30,9 @@ export class PostsController {
   }
 
   @Patch()
-  public patchPosts(@Body() patchPostsDto: PatchPostDto) {}
+  public async patchPosts(@Body() patchPostsDto: PatchPostDto) {
+    return await this.postService.update(patchPostsDto);
+  }
 
   @Delete('/:id')
   public deletePosts(@Param('id', ParseIntPipe) id: number) {
