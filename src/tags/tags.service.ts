@@ -24,4 +24,12 @@ export class TagsService {
       },
     });
   }
+
+  public async delete(id: number) {
+    return await this.tagRepository.delete(id);
+  }
+
+  public async softDelete(id: number) {
+    return await this.tagRepository.softDelete(id);
+  }
 }
