@@ -10,25 +10,30 @@ import { Post } from './posts/post.entity';
 import { TagsModule } from './tags/tags.module';
 import { Tag } from './tags/tag.entity';
 import { MetaOptionsModule } from './meta-options/meta-options.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     UsersModule,
     PostsModule,
     AuthModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['.env.dev'],
+    }),
     TypeOrmModule.forRootAsync({
-      imports: [],
-      inject: [],
-      useFactory: () => ({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configservice: ConfigService) => ({
         type: 'postgres',
         // entities: [User, Post, Tag],
         autoLoadEntities: true,
         synchronize: true,
-        port: 5432,
-        username: 'postgres',
-        password: '8259',
-        host: 'localhost',
-        database: 'nestjs-blog',
+        port: +configservice.get('DATABASE_PORT'),
+        username: configservice.get('DATABASE_USER'),
+        password: configservice.get('DATABASE_PASSWORD'),
+        host: configservice.get('DATABASE_HOST'),
+        database: configservice.get('DATABASE_NAME'),
       }),
     }),
     TagsModule,
