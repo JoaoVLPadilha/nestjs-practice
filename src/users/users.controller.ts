@@ -32,6 +32,12 @@ export class UsersController {
     return this.usersService.findAll(getUserParamDto, limit, page);
   }
 
+  @Get('/one/:id')
+  public getUser(@Param('id', ParseIntPipe) id: number) {
+    console.log(id);
+    return this.usersService.findOne(id);
+  }
+
   @Post()
   public createUser(
     @Body() createUserDto: CreateUserDto,

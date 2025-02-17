@@ -1,4 +1,11 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { GetUserParamDto } from '../dtos/get-users-param.dto';
 import { AuthService } from 'src/auth/auth.service';
 import { Repository } from 'typeorm';
@@ -24,9 +31,22 @@ export class UsersService {
   ) {}
 
   public async createUser(createUserDto: CreateUserDto) {
-    const existingUser = await this.usersRepository.findOne({
-      where: { email: createUserDto.email },
-    });
+    let existingUser = undefined;
+    try {
+      existingUser = await this.usersRepository.findOne({
+        where: { email: createUserDto.email },
+      });
+    } catch (error) {
+      throw new RequestTimeoutException('timeout', {
+        description: 'Database giving timeout',
+      });
+    }
+
+    if (existingUser) {
+      throw new BadRequestException('User already exist', {
+        description: 'Email já definido',
+      });
+    }
 
     let newUser = this.usersRepository.create(createUserDto);
     newUser = await this.usersRepository.save(newUser);
@@ -45,9 +65,6 @@ export class UsersService {
     limit: number,
     page: number,
   ) {
-    const result = this.configService.get('S3_BUCKET');
-    console.log(result);
-    const isAuth = this.authService.isAuthenticathed('1234');
     return [
       {
         name: 'John Doe',
@@ -66,6 +83,10 @@ export class UsersService {
    * @returns
    */
   public async findOne(id: number) {
-    return await this.usersRepository.findOneBy({ id });
+    let user = await this.usersRepository.findOneBy({ id });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 }
