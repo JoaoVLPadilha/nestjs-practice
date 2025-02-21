@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { UsersService } from 'src/users/providers/users.service';
 import { CreatePostsDto } from './dtos/create-posts.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,6 +12,7 @@ import { Post } from './post.entity';
 import { MetaOption } from 'src/meta-options/meta-options.entity';
 import { TagsService } from 'src/tags/tags.service';
 import { PatchPostDto } from './dtos/patch-posts-dto';
+import { Tag } from 'src/tags/tag.entity';
 
 @Injectable()
 export class PostsService {
@@ -53,14 +58,24 @@ export class PostsService {
   }
 
   public async update(patchPostDto: PatchPostDto) {
+    let tags;
+    let post;
+    let savePost;
     // Find Tags
-    const tags = await this.tagService.getMultipleTags(patchPostDto.tags);
+    tags = await this.tagService.getMultipleTags(patchPostDto.tags);
+    if (!tags || tags.legth != patchPostDto.tags.length) {
+      throw new NotFoundException('Tag not found');
+    }
     // Find Post
-    const post = await this.postRepository.findOne({
+    post = await this.postRepository.findOne({
       where: {
         id: patchPostDto.id,
       },
     });
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
     // Update de properties
     post.title = patchPostDto.title ?? post.title;
     post.slug = patchPostDto.slug ?? post.slug;
@@ -74,7 +89,12 @@ export class PostsService {
     // Assign new tags
     post.tags = tags;
     // Save the post and return
-    return await this.postRepository.save(post);
+    try {
+      savePost = await this.postRepository.save(post);
+    } catch (error) {
+      throw new RequestTimeoutException('Connection with database severed');
+    }
+    return savePost;
   }
 
   public async delete(id: number) {
