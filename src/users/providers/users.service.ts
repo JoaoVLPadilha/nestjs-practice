@@ -34,7 +34,7 @@ export class UsersService {
     private readonly usersCreateManyProvider: UsersCreateManyProvider,
   ) {}
 
-  public async createMany(createUsersDto: CreateUserDto[]) {
+  public async createMany(createUsersDto: CreateManyDto) {
     return await this.usersCreateManyProvider.createMany(createUsersDto);
   }
 

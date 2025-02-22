@@ -65,10 +65,7 @@ export class UsersController {
   }
 
   @Post('create-many')
-  public createManyUsers(
-    @Body(new ParseArrayPipe({ items: CreateUserDto }))
-    createUsersDto: CreateUserDto[],
-  ) {
+  public createManyUsers(@Body() createUsersDto: CreateManyDto) {
     return this.usersService.createMany(createUsersDto);
   }
 }

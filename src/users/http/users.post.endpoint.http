@@ -16,7 +16,35 @@ Content-Type: application/json
   "firstName": "John Doe",
   "lastName": "John Doe",
   "password": "@password123",
-  "email": "emailzaoe@gmail.com",
+  "email": "teste243@gmail.com",
   "auth":"teste"
     }
   ]
+POST http://localhost:3000/users/create-many
+Content-Type: application/json
+{
+  "createManyUsers": 
+  [
+    {
+  "firstName": "John Doe",
+  "lastName": "John Doe",
+  "email":"jonih@gmail.com",
+  "password": "@password123",
+  "auth":"teste"
+    },
+    {
+  "firstName": "Mark Doe",
+  "lastName": "John Doe",
+  "email":"markinho@gmail.com",
+  "password": "@password123",
+  "auth":"teste"
+    },
+    {
+  "firstName": "Jesse Doe",
+  "lastName": "Jesse Doe",
+  "email":"jesse@gmail.com",
+  "password": "@password123",
+  "auth":"teste"
+    }
+  ]
+}
