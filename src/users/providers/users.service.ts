@@ -8,11 +8,12 @@ import {
 } from '@nestjs/common';
 import { GetUserParamDto } from '../dtos/get-users-param.dto';
 import { AuthService } from 'src/auth/auth.service';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { User } from '../user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { ConfigService } from '@nestjs/config';
+import { UsersCreateManyProvider } from './users-create-many.provider';
 /**
  * Class to connect to Users
  */
@@ -28,7 +29,13 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private configService: ConfigService,
+    private readonly dataSource: DataSource,
+    private readonly usersCreateManyProvider: UsersCreateManyProvider,
   ) {}
+
+  public async createMany(createUsersDto: CreateUserDto[]) {
+    return await this.usersCreateManyProvider.createMany(createUsersDto);
+  }
 
   public async createUser(createUserDto: CreateUserDto) {
     let existingUser = undefined;
