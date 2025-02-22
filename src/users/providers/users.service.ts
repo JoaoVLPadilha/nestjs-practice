@@ -14,6 +14,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { ConfigService } from '@nestjs/config';
 import { UsersCreateManyProvider } from './users-create-many.provider';
+import { CreateManyDto } from '../dtos/create-many.dto';
 /**
  * Class to connect to Users
  */

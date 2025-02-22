@@ -11,12 +11,14 @@ import {
   Headers,
   ParseIntPipe,
   DefaultValuePipe,
+  ParseArrayPipe,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUserParamDto } from './dtos/get-users-param.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
 import { UsersService } from './providers/users.service';
 import { ApiTags } from '@nestjs/swagger';
+import { CreateManyDto } from './dtos/create-many.dto';
 @Controller('users')
 @ApiTags('Users')
 export class UsersController {
@@ -63,7 +65,10 @@ export class UsersController {
   }
 
   @Post('create-many')
-  public createManyUsers(@Body() createUserDto: CreateUserDto[]) {
-    return this.usersService.createMany(createUserDto);
+  public createManyUsers(
+    @Body(new ParseArrayPipe({ items: CreateUserDto }))
+    createUsersDto: CreateUserDto[],
+  ) {
+    return this.usersService.createMany(createUsersDto);
   }
 }

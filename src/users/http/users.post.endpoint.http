@@ -7,3 +7,16 @@ Content-Type: application/json
   "password": "@password123",
   "auth":"teste"
 }
+
+
+POST http://localhost:3000/users/create-many
+Content-Type: application/json
+  [
+    {
+  "firstName": "John Doe",
+  "lastName": "John Doe",
+  "password": "@password123",
+  "email": "emailzaoe@gmail.com",
+  "auth":"teste"
+    }
+  ]
