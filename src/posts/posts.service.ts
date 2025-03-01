@@ -13,6 +13,8 @@ import { MetaOption } from 'src/meta-options/meta-options.entity';
 import { TagsService } from 'src/tags/tags.service';
 import { PatchPostDto } from './dtos/patch-posts-dto';
 import { Tag } from 'src/tags/tag.entity';
+import { GetPostsDto } from './dtos/get-posts.dto';
+import { PaginationProvider } from 'src/common/pagination/providers/pagination.provider';
 
 @Injectable()
 export class PostsService {
@@ -25,6 +27,7 @@ export class PostsService {
     private postRepository: Repository<Post>,
     @InjectRepository(MetaOption)
     private metaOptionRepository: Repository<MetaOption>,
+    private paginationProvider: PaginationProvider,
   ) {}
   // public async createPost(createPostsDto: CreatePostsDto) {
 
@@ -33,13 +36,14 @@ export class PostsService {
   //   return (newPost = await this.postRepository.save(newPost));
   // }
 
-  public async findAll() {
-    const post = await this.postRepository.find({
-      relations: {
-        metaOptions: true,
-        tags: true,
+  public async findAll(postQuery: GetPostsDto) {
+    const post = await this.paginationProvider.paginationQuery(
+      {
+        limit: postQuery.limit,
+        page: postQuery.page,
       },
-    });
+      this.postRepository,
+    );
     return post;
   }
   public async create(createPostsDto: CreatePostsDto) {

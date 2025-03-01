@@ -11,6 +11,7 @@ import { TagsModule } from './tags/tags.module';
 import { Tag } from './tags/tag.entity';
 import { MetaOptionsModule } from './meta-options/meta-options.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { PaginationModule } from './common/pagination/pagination.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
     TagsModule,
     MetaOptionsModule,
+    PaginationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

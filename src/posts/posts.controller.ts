@@ -28,9 +28,8 @@ export class PostsController {
     return userId;
   }
   @Get('all')
-  public getAllPosts(@Query() getPostsDto: GetPostsDto) {
-    console.log('getPostsDto', getPostsDto);
-    return getPostsDto;
+  public async getAllPosts(@Query() postQuery: GetPostsDto) {
+    return this.postService.findAll(postQuery);
   }
 
   @Post('/')
