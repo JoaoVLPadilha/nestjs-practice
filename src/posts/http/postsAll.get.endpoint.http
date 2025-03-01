@@ -1,0 +1,10 @@
+{{
+const date = new Date()
+exports.dateTeste = date.toString()
+}}
+
+GET http://localhost:3000/posts/all/
+?limit=10
+&page=10
+&startDate={{dateTeste}}
+&endDate={{dateTeste}}
