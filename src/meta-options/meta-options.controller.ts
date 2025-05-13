@@ -9,7 +9,7 @@ export class MetaOptionsController {
   public createMetaOptions(
     @Body() createPostMetaOptionsDto: CreatePostMetaOptionsDto,
   ) {
-    console.log('createPostMetaOptionsDto', createPostMetaOptionsDto);
+
     return this.metaOptionsService.createMetaOption(createPostMetaOptionsDto);
   }
 }

@@ -15,6 +15,8 @@ import { CreateUserDto } from '../dtos/create-user.dto';
 import { ConfigService } from '@nestjs/config';
 import { UsersCreateManyProvider } from './users-create-many.provider';
 import { CreateManyDto } from '../dtos/create-many.dto';
+import { CreateUserProvider } from './create-user.provider';
+import { FindOneUserByEmailProvider } from './find-one-user-by-email.provider';
 /**
  * Class to connect to Users
  */
@@ -32,33 +34,16 @@ export class UsersService {
     private configService: ConfigService,
     private readonly dataSource: DataSource,
     private readonly usersCreateManyProvider: UsersCreateManyProvider,
+    private readonly userCreateProvider: CreateUserProvider,
+    private readonly findOneUserByEmailProvider: FindOneUserByEmailProvider,
   ) {}
 
   public async createMany(createUsersDto: CreateManyDto) {
     return await this.usersCreateManyProvider.createMany(createUsersDto);
   }
-
   public async createUser(createUserDto: CreateUserDto) {
-    let existingUser = undefined;
-    try {
-      existingUser = await this.usersRepository.findOne({
-        where: { email: createUserDto.email },
-      });
-    } catch (error) {
-      throw new RequestTimeoutException('timeout', {
-        description: 'Database giving timeout',
-      });
-    }
-
-    if (existingUser) {
-      throw new BadRequestException('User already exist', {
-        description: 'Email já definido',
-      });
-    }
-
-    let newUser = this.usersRepository.create(createUserDto);
-    newUser = await this.usersRepository.save(newUser);
-    return newUser;
+    console.log('createUserDto.password', createUserDto.password);
+    return await this.userCreateProvider.createUser(createUserDto);
   }
 
   /**
@@ -96,5 +81,9 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
     return user;
+  }
+
+  public async findOneUserByEmail(email: string) {
+    return this.findOneUserByEmailProvider.findOneByEmail(email);
   }
 }

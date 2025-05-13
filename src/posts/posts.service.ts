@@ -49,7 +49,6 @@ export class PostsService {
   public async create(createPostsDto: CreatePostsDto) {
     const findUser = await this.usersService.findOne(createPostsDto.authorId);
     const tags = await this.tagService.getMultipleTags(createPostsDto.tags);
-    console.log('tags', tags);
     if (findUser.email) {
       let newPost = this.postRepository.create({
         ...createPostsDto,
