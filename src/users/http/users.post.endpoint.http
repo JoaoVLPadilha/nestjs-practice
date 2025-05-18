@@ -7,20 +7,9 @@ Content-Type: application/json
   "password": "@password1234"
 }
 
-
 POST http://localhost:3000/users/create-many
 Content-Type: application/json
-  [
-    {
-  "firstName": "John Doe",
-  "lastName": "John Doe",
-  "password": "@password123",
-  "email": "teste243@gmail.com",
-  "auth":"teste"
-    }
-  ]
-POST http://localhost:3000/users/create-many
-Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjY5LCJlbWFpbCI6ImV4ZW1wbG8yQGV4YW1wbGUuY29tIiwiaWF0IjoxNzQ3NTM1NzM3LCJleHAiOjE3NDc1MzkzMzcsImF1ZCI6ImxvY2FsaG9zdDozMDAwIiwiaXNzIjoibG9jYWxob3N0OjMwMDAifQ.5Fza5lL60ojbV71ROmCLSx5OaIhTIMeCqSVb66YvzGI
 {
   "createManyUsers": 
   [

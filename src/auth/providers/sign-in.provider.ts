@@ -10,6 +10,9 @@ import { SignInDto } from '../dtos/signin.dto';
 import { BcryptProvider } from './bcrypt.provider';
 import { AuthService } from '../auth.service';
 import { HashingProvider } from './hashing.provider';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigType } from '@nestjs/config';
+import jwtConfig from '../config/jwt.config';
 
 @Injectable()
 export class SignInProvider {
@@ -17,6 +20,10 @@ export class SignInProvider {
     @Inject(forwardRef(() => UsersService))
     private userService: UsersService,
     private hashingProvider: HashingProvider,
+    // Avaible through lib
+    private readonly jwtService: JwtService,
+    @Inject(jwtConfig.KEY)
+    private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
   ) {}
 
   public async signIn(signInDto: SignInDto) {
@@ -32,7 +39,22 @@ export class SignInProvider {
         throw new RequestTimeoutException('Failed to fetch compare');
       }
 
-      if (isPasswordCorrect) return user;
+      if (isPasswordCorrect) {
+        const accessToken = await this.jwtService.signAsync(
+          {
+            sub: user.id,
+            email: user.email,
+          },
+          {
+            audience: this.jwtConfiguration.audience,
+            issuer: this.jwtConfiguration.issuer,
+            secret: this.jwtConfiguration.secret,
+            expiresIn: this.jwtConfiguration.accessTokenTtl,
+          },
+        );
+
+        return accessToken;
+      }
 
       throw new ForbiddenException('Password incorrect');
     }
